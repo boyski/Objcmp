@@ -1,0 +1,7 @@
+- Rework zipfile comparator to use 'zipsum' style (map, clear, cmp).
+  Maybe best to borrow back from AO code.c
+
+- Handle Windows "whole program optimization" .obj files, created 
+  with the /GL compiler option. These are in an undocumented format
+  but with luck it's more or less COFF, enough to allow timestamp
+  suppression anyway.

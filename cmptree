@@ -1,0 +1,62 @@
+#!/usr/local/bin/perl
+
+use Cwd;
+use File::Basename;
+use File::Find;
+use File::Spec;
+use Getopt::Long;
+
+my %opt;
+GetOptions(\%opt, qw(d s v));
+
+my $prog = basename($0, qw(.pl));
+my $rc = 0;
+
+my %find_cfg;
+$find_cfg{wanted} = \&wanted;
+
+my $cwd = getcwd;
+
+my $old = File::Spec->rel2abs(shift);
+my $new = File::Spec->rel2abs(shift);
+
+my @opts = map { "-$_" } keys %opt;
+
+sub wanted {
+    return unless -f;
+    my $path1 = $File::Find::name;
+    (my $path2 = $path1) =~ s%.*?\Q$old%$new%;
+    die if $path2 eq $path1;
+    $rc = 1 if system('objcmp', @opts, $path1, $path2);
+}
+
+find(\%find_cfg, $old);
+
+exit($rc);
+
+__END__
+
+=head1 NAME
+
+cmptree - Compare two directory trees using objcmp
+
+=head1 SYNOPSIS
+
+  cmptree -v <dir1> <dir2>
+
+=head1 DESCRIPTION
+
+This is just a simple Perl script which compares two directory
+trees using B<objcmp>. Flags are identical to those of I<objcmp>.
+
+=head1 AUTHOR
+
+David Boyce <dsb AT boyski.com>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2006 David Boyce. All rights reserved.  This Perl
+program is free software; you may redistribute and/or modify it under
+the same terms as Perl itself.
+
+=cut

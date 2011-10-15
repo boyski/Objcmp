@@ -1,0 +1,10 @@
+HOW TO BUILD:
+
+The objcmp program is built via make. On Unix, adapt the provided
+Makefile if required and run make. GNU make is fine.
+
+On Windows with Visual Studio, use "nmake -f NMakefile" afer
+running vsvars32.bat. Or use the included .sln/.vcproj files. Or
+use the precompiled objcmp.exe file.
+
+Place the resulting executable on your PATH. Done!

@@ -1,0 +1,30 @@
+# We use -MT* rather than -MD* to suppress a dependency on MSVCR71.dll.
+
+TARGETS		= objcmp.exe zipsum.exe
+OBJCMP_OBJS	= objcmp.obj unstamp.obj zipfile.obj
+ZIPSUM_OBJS	= zipsum.obj
+ALL_OBJS	= $(OBJCMP_OBJS) $(ZIPSUM_OBJS)
+
+!IF "$(CFG)" == "debug"
+CFG_CFLAGS	= -MTd -Od -Z7 -GS -RTC1
+CFG_LDFLAGS	= -debug
+!ELSE
+CFG_CFLAGS	= -MT -O2 -DNDEBUG
+CFG_LDFLAGS	=
+!ENDIF
+
+CC		= cl.exe
+CFLAGS		= -nologo $(CFG_CFLAGS) -W3 -EHsc -DWIN32 -D_CONSOLE -D_MBCS -D_CRT_SECURE_NO_WARNINGS
+LINK		= link.exe
+LFLAGS		= -nologo $(CFG_LDFLAGS) setargv.obj kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib -subsystem:console -incremental:no -machine:I386
+
+all: $(TARGETS)
+
+objcmp.exe: $(OBJCMP_OBJS)
+	$(LINK) $(LFLAGS) -out:$@ $(OBJCMP_OBJS)
+
+zipsum.exe: $(ZIPSUM_OBJS)
+	$(LINK) $(LFLAGS) -out:$@ $(ZIPSUM_OBJS)
+
+clean:
+	del $(TARGETS) $(ALL_OBJS) *.pdb

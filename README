@@ -1,0 +1,16 @@
+Objcmp is a program for comparing binary object files. A common problem
+with comparing binaries is that compilers and related tools often place
+datestamps in them, making otherwise-identical builds compare
+different. But unlike most other 'cmp' type programs, objcmp knows how
+to ignore datestamps in common binary formats.
+
+This problem is most egregious on Windows where datestamps and version
+strings (which objcmp also knows how to ignore) are everywhere. But
+there are troublesome file formats on Unix too, notably archive (.a)
+files. Objcmp knows how to skip datestamps in standard Unix archive
+files too.
+
+See the file 'objcmp.pod' for more information. Assuming you have a
+working copy of Perl around, you can read it with "perldoc" or convert
+it to a classic man page format with "pod2man". Or it can be read with
+any text editor.

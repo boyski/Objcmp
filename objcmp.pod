@@ -1,0 +1,58 @@
+=head1 NAME
+
+objcmp - compare files while potentially ignoring datestamps
+
+=head1 SYNOPSIS
+
+objcmp [-d] [-s] [-v] file1 file2
+
+=head1 DESCRIPTION
+
+B<Objcmp> compares any two files and returns an exit status of 0 iff
+they are known to be I<semantically identical>. The two files are first
+mapped into memory and the initial blocks compared. If both files are
+recognized as a binary type (currently .exe, .dll, .obj, and .lib on
+Windows and .a on Unix) which is known to embed date stamps and/or
+version data, the offsets containing these meaningless-at-runtime
+fields are zeroed.  Then, whether any fields were zeroed or not, the
+two blocks of memory are compared byte for byte.
+
+No guarantee is made that files which compare I<different> are in fact
+I<semantically different>. B<Objcmp> can only try to ignore those
+fields which it I<knows> to have no runtime effect. Thus it can be used
+as a replacement for the traditional B<cmp> program but adds value over
+other B<cmp> programs only for recognized file formats.
+
+=head1 OPTIONS
+
+The following options are supported:
+
+=over 4
+
+=item -h
+
+Print a short usage message summarizing the known flags.
+
+=item -d
+
+Dumb mode - do a brute force comparison. In other words, behave like
+the classic Unix B<cmp> program.
+
+=item -s
+
+Silent mode - print no output. The result of the compare is
+boolean and available in the return code.
+
+=item -v
+
+Verbose mode - print identical files too. Prints a message indicating
+that two files compared I<semantically identical>.
+
+=back
+
+=head1 COPYRIGHT
+
+Copyright (C) 2006 David Boyce.  All rights reserved.
+This program and associated documentation are licensed under
+the terms of the GNU General Public License. See the included
+COPYING file for details.
