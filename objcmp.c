@@ -488,8 +488,10 @@ cmp_files(const char *path1, off_t len1, const char *path2, off_t len2)
 	sys_err(F,L, 2, path1);
     if (close(fd1) < 0)
 	sys_err(F,L, 2, path1);
+#ifdef MADV_SEQUENTIAL
     if (madvise(data1, len1, MADV_SEQUENTIAL))
 	sys_err(F,L, 0, path1);
+#endif
 
 
     if ((fd2 = open(path2, O_RDONLY)) < 0)
@@ -499,8 +501,10 @@ cmp_files(const char *path1, off_t len1, const char *path2, off_t len2)
 	sys_err(F,L, 2, path2);
     if (close(fd2) < 0)
 	sys_err(F,L, 2, path2);
+#ifdef MADV_SEQUENTIAL
     if (madvise(data2, len2, MADV_SEQUENTIAL))
 	sys_err(F,L, 0, path2);
+#endif
 
     rc = cmp_data(path1, data1, path2, data2, len1);
 

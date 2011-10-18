@@ -272,7 +272,8 @@ main(int argc, char *argv[])
 {
     unsigned char *buf;
     unsigned sum;
-    size_t buf_size, data_size, i, j;
+    int i;
+    size_t buf_size, data_size, j;
     FILE *f;
     int rc = 0;
 
